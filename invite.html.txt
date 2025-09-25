@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Запрошення — Роман & Катерина</title>
+
+  <!-- Стиль шрифтів (Google Fonts) -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f5f6f8;
+      --card-bg: #ffffff;
+      --accent: #111111;
+      --muted: #66666a;
+      --accent-2: #b9b9bf;
+      --max-width: 980px;
+      --radius: 12px;
+      --gap: 28px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Merriweather", serif;
+      background: linear-gradient(180deg, var(--bg) 0%, #f8f8fa 100%);
+      color:var(--accent);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:var(--max-width);
+      background:rgba(255,255,255,0.75);
+      border-radius:16px;
+      box-shadow: 0 10px 30px rgba(16,20,24,0.06);
+      padding:28px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:36px;
+      align-items:start;
+    }
+
+    /* Сторона ліворуч — велика типографіка, дата, імена */
+    .hero{
+      padding:36px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:18px;
+      min-height:420px;
+    }
+    .names{
+      font-family: "Playfair Display", serif;
+      font-size:56px;
+      letter-spacing:6px;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .names .left{font-weight:700;}
+    .names .right{font-weight:400; font-size:24px; opacity:0.9}
+
+    .date{
+      margin-top:18px;
+      display:flex;
+      gap:22px;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .date .block{
+      background:transparent;
+      border-radius:10px;
+      padding:22px 28px;
+      text-align:center;
+      font-family:"Playfair Display", serif;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.03);
+    }
+    .date .block .num{
+      font-size:64px;
+      line-height:0.8;
+      font-weight:700;
+    }
+    .date .block .label{
+      font-size:14px;
+      color:var(--muted);
+      margin-top:8px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+    }
+
+    /* Права колонка — основний контент */
+    .card{
+      padding:30px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.88));
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.03);
+      min-height:420px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+    .intro{
+      text-align:center;
+      font-style:italic;
+      color:var(--muted);
+      font-size:18px;
+    }
+
+    .section{
+      border-top:1px solid var(--accent-2);
+      padding-top:18px;
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+    }
+    .icon{
+      width:56px;
+      height:56px;
+      flex:0 0 56px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:10px;
+      border:1px solid var(--accent-2);
+      background:transparent;
+      color:var(--muted);
+    }
+
+    .section .info{
+      flex:1;
+    }
+    .section .info h3{
+      margin:0;
+      font-family:"Playfair Display", serif;
+      font-size:20px;
+      margin-bottom:6px;
+    }
+    .meta{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.35;
+    }
+    .time{
+      margin-top:8px;
+      font-family:"Playfair Display", serif;
+      font-size:20px;
+      color:var(--accent);
+    }
+
+    /* CTA */
+    .cta-row{
+      margin-top:auto;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding-top:12px;
+    }
+    .btn{
+      padding:12px 18px;
+      border-radius:10px;
+      border:0;
+      font-size:16px;
+      cursor:pointer;
+font-weight:700;
+      letter-spacing:0.6px;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:white;
+      box-shadow: 0 6px 18px rgba(17,17,17,0.12);
+    }
+    .btn-outline{
+      background:transparent;
+      border:1px solid var(--accent);
+      color:var(--accent);
+    }
+
+    .note{
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      margin-top:12px;
+    }
+
+    /* Modal (RSVP) */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(8,10,12,0.45);
+      z-index:60;
+      padding:20px;
+    }
+    .modal{
+      background:white;
+      border-radius:12px;
+      padding:22px;
+      width:100%;
+      max-width:560px;
+      box-shadow:0 20px 60px rgba(10,12,20,0.25);
+    }
+    .modal h4{
+      margin:0 0 8px 0;
+      font-family:"Playfair Display", serif;
+    }
+    form .row{display:flex;gap:12px}
+    form label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type="text"], input[type="email"], textarea, select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #e6e6ea;
+      font-size:15px;
+      font-family:inherit;
+    }
+    textarea{min-height:100px;resize:vertical}
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .close-x{
+      float:right;
+      background:transparent;
+      border:0;
+      font-size:20px;
+      cursor:pointer;
+      color:var(--muted);
+    }
+
+    /* thank you */
+    .thanks{
+      text-align:center;
+      padding:18px 12px;
+      font-size:16px;
+    }
+
+    /* адаптив */
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr; padding:18px}
+      .hero{order:2}
+      .card{order:1}
+      .date .block .num{font-size:48px}
+      .names{font-size:36px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="page-title">
+    <!-- Ліва частина -->
+    <header class="hero" aria-hidden="false">
+      <div class="names" aria-label="Імена молодят">
+        <div class="left">Роман</div>
+        <div class="right">Катерина</div>
+      </div>
+
+      <div style="margin-top:14px;color:var(--muted);font-size:15px;">
+        Запрошуємо Вас розділити з нами найважливішу і найхвилюючішу подію.
+      </div>
+
+      <div class="date" aria-hidden="false" role="group" aria-label="Дата">
+        <div class="block" aria-label="День">
+          <div class="num">08</div>
+          <div class="label">День</div>
+        </div>
+        <div class="block" aria-label="Місяць">
+          <div class="num">11</div>
+          <div class="label">Місяць</div>
+        </div>
+        <div class="block" aria-label="Рік">
+          <div class="num">25</div>
+          <div class="label">Рік</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Права частина — деталі та CTA -->
+    <section class="card" aria-labelledby="details-title">
+      <div class="intro" id="details-title">Запрошуємо Вас!</div>
+
+      <div class="section" aria-labelledby="church-title">
+        <div class="icon" aria-hidden="true">
+          <!-- SVG церква -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2v6"></path>
+            <path d="M5 10v10h14V10L12 6 5 10z"></path>
+            <path d="M9 21v-6h6v6"></path>
+          </svg>
+        </div>
+        <div class="info">
+          <h3 id="church-title">Таїнство вінчання</h3>
+          <div class="meta">ЦЕРКВА СВЯТОГО ЮРА<br>вул. Солоний Ставок, 23, Дрогобич</div>
+          <div class="time" aria-label="Час вінчання">12:00</div>
+        </div>
+      </div>
+
+      <div class="section" aria-labelledby="banquet-title">
+        <div class="icon" aria-hidden="true">
+          <!-- SVG тарілка -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.
+2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="7"></circle>
+            <path d="M4 12h3"></path>
+            <path d="M21 12h-3"></path>
+          </svg>
+        </div>
+        <div class="info">
+          <h3 id="banquet-title">Святковий бенкет</h3>
+          <div class="meta">РЕСТОРАН "ЗОЛОТА ГОРА"<br>вул. Трускавецька 2, Стебник</div>
+          <div class="time" aria-label="Час бенкету">14:00</div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:8px;">
+        Ми будемо вдячні: якщо ви утримаєтесь від покупки квітів. Замість цього, за бажанням, ви можете долучитися до збору для наших військових.
+      </div>
+
+      <div class="cta-row" role="region" aria-label="Заклик до дії">
+        <button class="btn btn-primary" id="rsvp-open" aria-haspopup="dialog" aria-controls="rsvp-modal">Підтвердити присутність</button>
+        <a href="#details" class="btn btn-outline" id="details-link">Деталі заходу</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Модальне вікно RSVP -->
+  <div class="modal-backdrop" id="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-title">
+    <div class="modal" role="document">
+      <button class="close-x" id="rsvp-close" aria-label="Закрити">&times;</button>
+      <h4 id="rsvp-title">Підтвердження присутності</h4>
+      <p style="color:var(--muted);margin-top:6px;margin-bottom:14px;">Будь ласка, заповніть форму — ми з вами зв'яжемося для підтвердження.</p>
+
+      <form id="rsvp-form" autocomplete="off" novalidate>
+        <div class="form-grid">
+          <div>
+            <label for="fullName">ПІБ</label>
+            <input id="fullName" name="fullName" type="text" required aria-required="true" />
+          </div>
+          <div>
+            <label for="email">Електронна пошта або телефон</label>
+            <input id="email" name="email" type="text" required aria-required="true" />
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <label for="attendance">Ви будете присутні?</label>
+          <select id="attendance" name="attendance" required aria-required="true">
+            <option value="yes">Так, я буду</option>
+            <option value="no">Нажаль, не зможу</option>
+            <option value="maybe">Поки не впевнений(а)</option>
+          </select>
+        </div>
+
+        <div style="margin-top:12px;">
+          <label for="guests">Кількість гостей (включно з вами)</label>
+          <input id="guests" name="guests" type="text" />
+        </div>
+
+        <div style="margin-top:12px;">
+          <label for="message">Повідомлення нам (наприклад, дієтичні побажання, примітки)</label>
+          <textarea id="message" name="message"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:14px;justify-content:flex-end">
+          <button type="button" class="btn btn-outline" id="cancel-rsvp">Відмінити</button>
+          <button type="submit" class="btn btn-primary">Відправити підтвердження</button>
+        </div>
+      </form>
+
+      <div id="rsvp-thanks" style="display:none" class="thanks" aria-live="polite">
+        Дякуємо! Ми отримали вашу відповідь. Очікуйте на підтвердження — ми зв'яжемося найближчим часом.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Простий JS для відкриття/закриття модалки та клієнтської валідації форми
+    (function(){
+      const openBtn = document.getElementById('rsvp-open');
+      const modal = document.getElementById('rsvp-modal');
+      const closeBtn = document.getElementById('rsvp-close');
+      const cancelBtn = document.getElementById('cancel-rsvp');
+      const form = document.getElementById('rsvp-form');
+      const thanks = document.getElementById('rsvp-thanks');
+
+      function openModal(){
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        // ставимо фокус у перше поле
+        setTimeout(()=> document.getElementById('fullName').focus(), 100);
+      }
+      function closeModal(){
+        modal.style.display = 'none';
+        document.body.style.
+overflow = '';
+        // очищуємо стан форми після закриття, якщо показане віддякування — приховати
+        if(thanks.style.display === 'block'){
+          thanks.style.display = 'none';
+          form.style.display = 'block';
+          form.reset();
+        }
+      }
+
+      openBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      cancelBtn.addEventListener('click', closeModal);
+
+      // Закрити модалку при ESC
+      window.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+      });
+
+      // Клік поза модалкою закриває
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) closeModal();
+      });
+
+      // Обробка відправки (клієнтська)
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        // Проста валідація: перевірка на значення для обов'язкових
+        const fullName = document.getElementById('fullName').value.trim();
+        const contact = document.getElementById('email').value.trim();
+        const attendance = document.getElementById('attendance').value;
+
+        if(!fullName || !contact){
+          alert('Будь ласка, заповніть ПІБ та контактні дані.');
+          return;
+        }
+
+        // Імітація відправки — показати повідомлення "дякуємо"
+        form.style.display = 'none';
+        thanks.style.display = 'block';
+
+        // Тут: якщо буде бекенд, можна зробити fetch() на API.
+        // Поки — імітація асинхронної відповіді.
+        setTimeout(function(){
+          // Після 3 секунд залишимо модалку відкритою з повідомленням.
+        }, 3000);
+      });
+    })();
+  </script>
+</body>
+</html>
